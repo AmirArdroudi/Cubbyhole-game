@@ -1,32 +1,64 @@
 #include <iostream>
-
 #include "Device.h"
 
 namespace Game
 {
+
 	//! Constructor
 	Device::Device() : m_pWindow(nullptr), m_pRenderer(nullptr)
 	{}
 
+	//! Destructor
+	Device::~Device()
+	{
+		m_pWindow = nullptr;
+		m_pRenderer = nullptr;
+	}
+
 	// Initialize window
-	void Device::initWindow(const char* title, int xPosWindow, int yPosWindow,
+	bool Device::initWindow(const char* title, int xPosWindow, int yPosWindow,
 					int width, int height, bool fullscreen)
 	{
-		SDL_Init(SDL_INIT_VIDEO);
+		bool success = true;
 
-		if (fullscreen)
+		// Initialize SDL
+		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
-			m_pWindow = SDL_CreateWindow(title, xPosWindow, yPosWindow, width, height, SDL_WINDOW_FULLSCREEN);
+			std::cout << "Could not initialize! SLD_ERROR : " << SDL_GetError();
+			success = false;
 		}
 		else
 		{
-			m_pWindow = SDL_CreateWindow(title, xPosWindow, yPosWindow, width, height, 0);
-		}
-		if (m_pWindow == NULL)
-		{
-			printf("Couldn't create window : %s\n", SDL_GetError());
+			// Create window
+			if (fullscreen)
+			{
+				m_pWindow = SDL_CreateWindow(title, xPosWindow, yPosWindow,
+								width, height, SDL_WINDOW_FULLSCREEN);
+			}
+			else
+			{
+				m_pWindow = SDL_CreateWindow(title, xPosWindow, yPosWindow,
+								width, height, 0);
+			}
+			if (m_pWindow == NULL)
+			{
+				std::cout << "Could not initialize! SLD_ERROR : " << SDL_GetError();
+				success = false;
+			}
 		}
 		
+		return success;
+		
+	}
+
+	//
+	void Device::closeWindow()
+	{
+		// Destroy window
+		SDL_DestroyWindow(m_pWindow);
+		// ??????????????? Is it fine calling destructor from here ??????????????? 
+		Device::~Device();
+		SDL_Quit();
 	}
 
 } // Game
