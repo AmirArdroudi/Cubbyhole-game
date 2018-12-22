@@ -1,29 +1,33 @@
-#include "Device.h"
+#include <Windows.h>
 #include <iostream>
+
+#include "Device.h"
 
 int main(int argc, char ** argv)
 {
+
 	Game::Device* device = new Game::Device();
 
+	//set Debugging console
+	device->DebugConsole();
 
-	if (!device->InitWindow("Cubbyhole", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, 0))
+	if (device->InitWindow("Cubbyhole", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, false))
 	{
-		std::cout << "Failed to initialize SDL!! (SLD_ERROR : " << SDL_GetError()<<" )."<< std::endl;
-		return 1;
+		while (device->IsRunning())
+		{
+			device->EventsHandler();
+			device->Render();
+		}
 	}
 	else
 	{
-		// Game loop
-		while (device->Running())
-		{
-			device->Render();
-			device->EventsHandler();
-		}
-
+		std::cout << "Failed to initialize SDL!! (SLD_ERROR : " << SDL_GetError() << " )." << std::endl;
+		return 1;
+		
 	}
 	
+	
 	device->CloseWindow();
-
 	delete device;
 
 	return 0;

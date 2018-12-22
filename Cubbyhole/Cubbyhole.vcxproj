@@ -134,6 +134,9 @@
   <ItemGroup>
     <ClInclude Include="Device.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Unity\UnityPhysics2D\Assets\Sprites\Environments\Torch.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

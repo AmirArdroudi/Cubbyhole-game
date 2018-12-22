@@ -7,6 +7,8 @@
 // ---------------------------------------------------------
 
 #include <iostream>
+#include <Windows.h>
+
 #include "Device.h"
 
 namespace Game
@@ -25,62 +27,79 @@ namespace Game
 
 	// Initialize window
 	bool Device::InitWindow(const char* title, int xPosWindow, int yPosWindow,
-					int width, int height, bool fullscreen)
+						int height, int width, bool fullscreen)
 	{
-		bool success = true;
-
-		// Initialize SDL
-		if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
+		int flags = 0;
+		if (fullscreen)
 		{
-			// Create window
-			if (fullscreen)
-			{
-				m_pWindow = SDL_CreateWindow(title, xPosWindow, yPosWindow,
-					width, height, SDL_WINDOW_FULLSCREEN);
-			}
-			else
-			{
-				m_pWindow = SDL_CreateWindow(title, xPosWindow, yPosWindow,
-					width, height, 0);
-			}
+			flags = SDL_WINDOW_FULLSCREEN;
+		}
 
+		if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+		{
+			std::cout << "SDL init success\n";
+			//init window
+			m_pWindow = SDL_CreateWindow(title, xPosWindow, yPosWindow,
+				height, width, fullscreen);
+			
 			if (m_pWindow != NULL)
 			{
+				std::cout << "Window creation Success\n";
 				m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
+
+				if (m_pRenderer != NULL)
+				{
+					std::cout << "renderer creation Success\n";
+				}
+				else
+				{
+					std::cout << "renderer init fail\n";
+					return false;
+				}
 			}
 			else
 			{
-				std::cout << "Could not initialize! SLD_ERROR : " << SDL_GetError();
-				success = false;
+				std::cout << "Window init fail\n";
+				return false;
 			}
 		}
 		else
 		{
-			std::cout << "Could not initialize! SLD_ERROR : " << SDL_GetError();
-			success = false;
-			
+			std::cout << "SDL init fail\n";
+			return false;
 		}
-		
-		return success;
+		std::cout << "init success\n";
+
+		Device::LoadTexture();
+
+		return true;
 		
 	} // initWindow
 
 	void Device::Render()
 	{
 		// color the screen to purple
-		SDL_SetRenderDrawColor(m_pRenderer, 200, 0, 255, 255);
+		SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
 		// clear the window
 		SDL_RenderClear(m_pRenderer);
+		
+		SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle);
 		// show the window
 		SDL_RenderPresent(m_pRenderer);
 	}
 
 	void Device::CloseWindow()
 	{
+		std::cout << "cleaning game\n";
+		// Destroy window
 		SDL_DestroyWindow(m_pWindow);
 		m_pWindow = NULL;
+
+		SDL_DestroyRenderer(m_pRenderer);
+		m_pRenderer = NULL;
+
 		SDL_Quit();
-	} // closeWindow
+	} // CloseWindow
 
 	void Device::EventsHandler()
 	{
@@ -92,13 +111,35 @@ namespace Game
 				case SDL_QUIT:
 					m_bGameIsRunning = false;
 					break;
+				default:
+					break;
+
 			}
 		}
-	}
+	} // EventHandler
 
-	bool Device::Running()
+	bool Device::IsRunning()
 	{
 		return m_bGameIsRunning;
 	}
 
+	void Device::DebugConsole()
+	{
+		FILE *stream;
+		AllocConsole();
+		freopen_s(&stream, "CON", "w", stdout);
+	}
+	
+	void Device::LoadTexture()
+	{
+		SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/circle.bmp");
+		m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
+		SDL_FreeSurface(pTempSurface);
+
+		SDL_QueryTexture(m_pTexture, NULL, NULL, &m_sourceRectangle.w, &m_sourceRectangle.h);
+		m_destinationRectangle.x = m_sourceRectangle.x = 0;
+		m_destinationRectangle.y = m_sourceRectangle.y = 0;
+		m_destinationRectangle.w = m_sourceRectangle.w;
+		m_destinationRectangle.h = m_sourceRectangle.h;
+	}
 } // Game

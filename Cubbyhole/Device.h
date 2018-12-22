@@ -23,23 +23,31 @@ namespace Game
 		~Device();
 
 		bool InitWindow(const char*  title, int xPosWindow, int yPosWindow,
-					int Width, int height, bool fullscreen);
+					int height, int width,  bool fullscreen);
 
 		void CloseWindow();
 
 		void EventsHandler();
 
-		bool Running();
+		bool IsRunning();
 
 		void Render();
 		
+		
+
+		void DebugConsole();
+
+		void LoadTexture();
 		//SDL_GetWindowSurface* getWindowSurface();
 	private:
 
 		SDL_Window*	  m_pWindow;
 		SDL_Renderer* m_pRenderer;
-		SDL_Surface*  m_pScreenSurface;
 		bool		  m_bGameIsRunning;
+
+		SDL_Texture* m_pTexture;
+		SDL_Rect m_sourceRectangle;
+		SDL_Rect m_destinationRectangle;
 
 	}; // Device
 
