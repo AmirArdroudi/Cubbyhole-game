@@ -83,7 +83,7 @@ namespace Game
 		// clear the window
 		SDL_RenderClear(m_pRenderer);
 		
-		SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle);
+		SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_sourceRectangle);
 		// show the window
 		SDL_RenderPresent(m_pRenderer);
 	}
@@ -141,5 +141,8 @@ namespace Game
 		m_destinationRectangle.y = m_sourceRectangle.y = 0;
 		m_destinationRectangle.w = m_sourceRectangle.w;
 		m_destinationRectangle.h = m_sourceRectangle.h;
+		m_sourceRectangle.w = 50;
+		m_sourceRectangle.h = 50;
+
 	}
 } // Game
