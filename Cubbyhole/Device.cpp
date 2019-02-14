@@ -71,7 +71,6 @@ namespace Game
 		std::cout << "init success\n";
 
 		Device::LoadTexture();
-
 		return true;
 		
 	} // initWindow
@@ -79,14 +78,17 @@ namespace Game
 	void Device::Render()
 	{
 		// color the screen to purple
-		SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
+		//SDL_SetRenderDrawColor(m_pRenderer, 0,	0, 0, 255);
 		// clear the window
 		SDL_RenderClear(m_pRenderer);
 		
-		SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_sourceRectangle);
+		SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle);
 		// show the window
 		SDL_RenderPresent(m_pRenderer);
 	}
+				
+
+
 
 	void Device::CloseWindow()
 	{
@@ -132,17 +134,17 @@ namespace Game
 	
 	void Device::LoadTexture()
 	{
-		SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/circle.bmp");
+		SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate_1.bmp");
+		//SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate_1.bmp");
+
 		m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
 		SDL_FreeSurface(pTempSurface);
-
+		/*
 		SDL_QueryTexture(m_pTexture, NULL, NULL, &m_sourceRectangle.w, &m_sourceRectangle.h);
-		m_destinationRectangle.x = m_sourceRectangle.x = 0;
-		m_destinationRectangle.y = m_sourceRectangle.y = 0;
-		m_destinationRectangle.w = m_sourceRectangle.w;
-		m_destinationRectangle.h = m_sourceRectangle.h;
-		m_sourceRectangle.w = 50;
-		m_sourceRectangle.h = 50;
-
+		*/
+		m_sourceRectangle.w = 128;
+		m_sourceRectangle.h = 82;
+		m_sourceRectangle.x = m_destinationRectangle.x = 0;
+		m_sourceRectangle.y = m_destinationRectangle.y = 0;
 	}
 } // Game
