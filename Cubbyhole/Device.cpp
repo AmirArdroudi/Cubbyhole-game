@@ -11,6 +11,7 @@
 #include <Windows.h>
 
 #include "Device.h"
+#include "TextureManager.h"
 
 SDL_Texture* p_Texplayer;
 SDL_Rect srcR, desR;
@@ -66,9 +67,7 @@ namespace Game
 			m_bIsRunning = false;
 		}
 
-		SDL_Surface* p_tmpSurfarce = IMG_Load("Assets/peniser.png");
-		p_Texplayer = SDL_CreateTextureFromSurface(m_pRenderer, p_tmpSurfarce);
-		SDL_FreeSurface(p_tmpSurfarce);
+		p_Texplayer = TextureManager::LoadTexture("Assets/peniser.png", m_pRenderer);
 	}
 
 	void Device::HandleEvents()
