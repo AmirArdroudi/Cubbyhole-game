@@ -12,10 +12,9 @@
 
 #include "Device.h"
 #include "TextureManager.h"
+#include "GameObject.h"
 
-SDL_Texture* p_Texplayer;
-SDL_Rect srcR, desR;
-int count = 0;
+GameObject* pPlayer;
 namespace Game
 {
 
@@ -66,8 +65,8 @@ namespace Game
 		{
 			m_bIsRunning = false;
 		}
-
-		p_Texplayer = TextureManager::LoadTexture("Assets/peniser.png", m_pRenderer);
+		// creating player gameObject
+		pPlayer = new GameObject("Assets/Penis.png", m_pRenderer, 32, 32);
 	}
 
 	void Device::HandleEvents()
@@ -91,17 +90,13 @@ namespace Game
 		// clear our renderer
 		SDL_RenderClear(m_pRenderer);
 		
-		SDL_RenderCopy(m_pRenderer, p_Texplayer, NULL, &desR);
+		pPlayer->Render();
 
 		SDL_RenderPresent(m_pRenderer);
 	}
 	void Device::Update()
 	{
-		count++;
-		desR.h = 64;
-		desR.w = 64;
-		desR.x = count;
-
+		pPlayer->Update();
 	}
 
 	void Device::Clean()
