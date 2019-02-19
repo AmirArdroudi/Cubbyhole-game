@@ -1,33 +1,31 @@
+// ---------------------------------------------------------
+//
+// file name : main.cpp'
+// summary : 
+// Data : 12/4/2018
+// Author : Amir Ardroudi
+//
+// ---------------------------------------------------------
 #include <Windows.h>
 #include <iostream>
 
 #include "Device.h"
-// page 34
+
 int main(int argc, char ** argv)
 {
-
 	Game::Device* device = new Game::Device();
+	
+	device->InitWindow("Cubbyhole", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
 
-	//set Debugging console
-	device->DebugConsole();
-
-	if (device->InitWindow("Cubbyhole", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, false))
+	while (device->Running())
 	{
-		while (device->IsRunning())
-		{
-			device->EventsHandler();
-			device->Render();
-		}
-	}
-	else
-	{
-		std::cout << "Failed to initialize SDL!! (SLD_ERROR : " << SDL_GetError() << " )." << std::endl;
-		return 1;
 		
+		device->HandleEvents();
+		device->Update();
+		device->Render();
 	}
 	
-	
-	device->CloseWindow();
+	device->Clean();
 	delete device;
 
 	return 0;

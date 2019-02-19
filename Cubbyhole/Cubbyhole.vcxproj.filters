@@ -31,7 +31,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\Unity\UnityPhysics2D\Assets\Sprites\Environments\Torch.png">
+    <Image Include="assets\Peniser.png">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>
