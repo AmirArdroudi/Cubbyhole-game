@@ -1,21 +1,26 @@
+// -------------------------------------------------------
+//
+// file name : Device.h'
+// summary : 
+// Data : 19/2/2019
+// Author : Amir Ardroudi 
+//
+// ---------------------------------------------------------
+
 #include "GameObject.h"
 #include "TextureManager.h"
 
-GameObject::GameObject(const char* textureSheet, SDL_Renderer* renderer, int x, int y)
+GameObject::GameObject(const char* textureSheet, int x, int y)
 {
-	m_pRenderer = renderer;
-	m_pObjectTexture = TextureManager::LoadTexture(textureSheet, renderer);
+	m_pObjectTexture = TextureManager::LoadTexture(textureSheet);
 
 	xPosition = x;
 	yPosition = y;
-
 }
 
 void GameObject::Update()
 {
 	//testing movement
-	/*
-	*/
 	xPosition++;
 	yPosition++;
 
@@ -33,5 +38,5 @@ void GameObject::Update()
 
 void GameObject::Render()
 {
-	SDL_RenderCopy(m_pRenderer, m_pObjectTexture, &m_srcRect, &m_destRect);
+	SDL_RenderCopy(Game::Device::m_pRenderer, m_pObjectTexture, &m_srcRect, &m_destRect);
 }

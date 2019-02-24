@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
 
 	Game::Device* device = new Game::Device();
 	
-	device->InitWindow("Cubbyhole", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+	device->InitWindow("Cubbyhole", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
 
 	while (device->Running())
 	{

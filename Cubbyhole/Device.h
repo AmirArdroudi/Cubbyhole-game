@@ -31,16 +31,17 @@ namespace Game
 
 		void Render();
 
+
 		void Clean();
 
 		void HandleEvents();
 
 		bool Running();
+		static SDL_Renderer* m_pRenderer;
 
 	private:
 
 		SDL_Window*	  m_pWindow;
-		SDL_Renderer* m_pRenderer;
 		bool		  m_bIsRunning;
 
 	}; // Device

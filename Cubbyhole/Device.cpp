@@ -13,13 +13,17 @@
 #include "Device.h"
 #include "TextureManager.h"
 #include "GameObject.h"
+#include "Map.h"
 
 GameObject* pPlayer;
+Map* pmap;
+
 namespace Game
 {
+	SDL_Renderer* Device::m_pRenderer = nullptr;
 
 	//! Constructor
-	Device::Device() : m_pWindow(nullptr), m_pRenderer(nullptr), m_bIsRunning(true)
+	Device::Device() : m_pWindow(nullptr), m_bIsRunning(true)
 	{}
 
 	//! Destructor
@@ -66,7 +70,8 @@ namespace Game
 			m_bIsRunning = false;
 		}
 		// creating player gameObject
-		pPlayer = new GameObject("Assets/Penis.png", m_pRenderer, 32, 32);
+		pPlayer = new GameObject("assets/Penis.png", 32, 32);
+		pmap = new Map();
 	}
 
 	void Device::HandleEvents()
@@ -89,7 +94,7 @@ namespace Game
 	{
 		// clear our renderer
 		SDL_RenderClear(m_pRenderer);
-		
+		pmap->DrawMap();
 		pPlayer->Render();
 
 		SDL_RenderPresent(m_pRenderer);
@@ -97,6 +102,7 @@ namespace Game
 	void Device::Update()
 	{
 		pPlayer->Update();
+		//pmap->LoadMap();
 	}
 
 	void Device::Clean()
